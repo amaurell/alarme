@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        /* Reset */
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+
+        /* Centraliza o box onde ficam os minutos */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      #container {
+        width: 400px;
+        height: 400px;
+        border: 1px solid black;
+        padding: 15px;
+      }
+      h1 {
+        font-size: 150px;
+        text-align: center;
+      }
+      #box {
+        margin: 20px;
+      }
+      h2 {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box">
+      <input id="valor" type="text" />
+      <button id="btn">iniciar</button>
+    </div>
+
+    <div id="container">
+      <h1 id="countdown"></h1>
+      <h1 id="segundos"></h1>
+      <h2 id="falta"></h2>
+    </div>
+
+    <h2>Minutos</h2>
+
+    <script>
+      let minutosFinais = 0;
+      let totalMinutos = 0;
+      let contador = 0;
+      let minutosPassados = 0;
+      let falta = 0;
+      let valorInput = 0;
+      let segundos = 59;
+      let elementoH = 0;
+      let elementoH2 = 0;
+
+      let btn = document
+        .getElementById('btn')
+        .addEventListener('click', inicio);
+
+      /* Transfere o valor digitado no input para as variáveis */
+      function verValor() {
+        valorInput = document.getElementById('valor').value;
+        minutosFinais = totalMinutos = valorInput;
+        valorInput = valorInput * 60;
+      }
+      /* Insere os valores no DOM */
+      function insereValor() {
+        if (segundos < 10) {
+          segundos = '0' + segundos;
+        }
+        elementoH = document.getElementById('countdown').innerText =
+          minutosFinais - 1 + ':' + segundos;
+        elementoH2 = document.getElementById('falta').innerText = valorInput;
+      }
+      /* Faz a contagem regressiva */
+      function reduzValor() {
+        segundos--;
+        contador++;
+        valorInput--;
+        if (segundos === 0) {
+          contador = contador + 4;
+        }
+        if (contador > 60) {
+          segundos = 59;
+          contador = 0;
+          minutosPassados++;
+          minutosFinais = totalMinutos - minutosPassados;
+        }
+        if (minutosFinais < 1) {
+          elementoH2 = document.getElementById('falta').innerText = valorInput;
+          elementoH = document.getElementById('countdown').innerText = 'FIM';
+          elementoH2 = document.getElementById('falta').innerText = '0';
+        }
+        if (minutosFinais > 0) {
+          insereValor();
+        }
+      }
+      function inicio() {
+        verValor();
+        insereValor();
+
+        setInterval(reduzValor, 1000);
+      }
+    </script>
+  </body>
+</html>
